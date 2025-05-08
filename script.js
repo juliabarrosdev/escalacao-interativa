@@ -84,7 +84,39 @@ function montarCampo(formacao) {
     });
   
     aplicarCor();  // Aplica a cor do time
+    montarBanco();
   }
+
+  const bancoContainer = document.getElementById('banco-reservas');
+  const NUM_RESERVAS = 7;
+  
+function montarBanco() {
+    bancoContainer.innerHTML = '';
+    const reservasSalvas = JSON.parse(localStorage.getItem('reservas')) || [];
+  
+    for (let i = 0; i < NUM_RESERVAS; i++) {
+      const reserva = document.createElement('div');
+      reserva.classList.add('jogador');
+      reserva.textContent = reservasSalvas[i] || `R${i+1}`;
+  
+      reserva.addEventListener('click', () => {
+        const novoNome = prompt('Digite o nome/número do reserva:', reserva.textContent);
+        if (novoNome !== null && novoNome.trim() !== '') {
+          reserva.textContent = novoNome.trim();
+          atualizarReservasLocalStorage();
+        }
+      });
+  
+      bancoContainer.appendChild(reserva);
+    }
+  }
+  
+function atualizarReservasLocalStorage() {
+    const reservas = document.querySelectorAll('#banco-reservas .jogador');
+    const nomes = Array.from(reservas).map(r => r.textContent);
+    localStorage.setItem('reservas', JSON.stringify(nomes));
+}
+
 // Função para aplicar a cor do time nos jogadores
 function aplicarCor() {
   const time = timeSelect.value;  // Pega o time selecionado

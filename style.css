@@ -34,3 +34,24 @@ body {
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+.banco {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 30px; 
+}
+  
+.banco .jogador {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
