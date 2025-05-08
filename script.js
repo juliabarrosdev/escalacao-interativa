@@ -12,6 +12,14 @@ jogadores.forEach(jogador => {
 const campo = document.querySelector('.campo');
 const formacaoSelect = document.getElementById('formacao');
 const timeSelect = document.getElementById('time'); // Pegando o select do time
+const btnLimpar = document.getElementById('limpar-escalacao');
+
+btnLimpar.addEventListener('click', () => {
+  if (confirm("Tem certeza que deseja limpar a escalação?")) {
+    localStorage.removeItem('escalacao');
+    montarCampo(formacaoSelect.value); // Recarrega a formação atual com números padrão
+  }
+});
 
 const formacoes = {
   '433': [ [1], [2, 3, 4, 5], [6, 7, 8], [9, 10, 11] ],
@@ -49,27 +57,34 @@ const coresTimes = {
 };
 
 function montarCampo(formacao) {
-  campo.innerHTML = ''; // Limpa o campo atual
-  formacoes[formacao].forEach((linha, index) => {
-    const linhaDiv = document.createElement('div');
-    linhaDiv.classList.add('linha');
-    linha.forEach(numero => {
-      const jogador = document.createElement('div');
-      jogador.classList.add('jogador');
-      jogador.textContent = numero;
-      jogador.addEventListener('click', () => {
-        const novoNome = prompt('Digite o nome ou número do jogador:', jogador.textContent);
-        if (novoNome !== null && novoNome.trim() !== '') {
-          jogador.textContent = novoNome.trim();
-        }
+    campo.innerHTML = ''; // Limpa o campo atual
+    const escalaSalva = JSON.parse(localStorage.getItem('escalacao')) || [];
+  
+    formacoes[formacao].forEach((linha, index) => {
+      const linhaDiv = document.createElement('div');
+      linhaDiv.classList.add('linha');
+      linha.forEach(numero => {
+        const jogador = document.createElement('div');
+        jogador.classList.add('jogador');
+        
+        // Usa o nome salvo se existir
+        jogador.textContent = escalaSalva[numero - 1] || numero;
+  
+        jogador.addEventListener('click', () => {
+          const novoNome = prompt('Digite o nome ou número do jogador:', jogador.textContent);
+          if (novoNome !== null && novoNome.trim() !== '') {
+            jogador.textContent = novoNome.trim();
+            atualizarEscalacaoLocalStorage(); // Atualiza o localStorage
+          }
+        });
+  
+        linhaDiv.appendChild(jogador);
       });
-      linhaDiv.appendChild(jogador);
+      campo.appendChild(linhaDiv);
     });
-    campo.appendChild(linhaDiv);
-  });
-  aplicarCor();  // Aplica a cor do time quando o campo é montado
-}
-
+  
+    aplicarCor();  // Aplica a cor do time
+  }
 // Função para aplicar a cor do time nos jogadores
 function aplicarCor() {
   const time = timeSelect.value;  // Pega o time selecionado
@@ -99,3 +114,22 @@ formacaoSelect.addEventListener('change', (e) => {
 
 // Troca a cor do time quando o select de time muda
 timeSelect.addEventListener('change', aplicarCor);
+
+function atualizarEscalacaoLocalStorage() {
+    const jogadoresAtuais = document.querySelectorAll('.jogador');
+    const escalaAtual = [];
+  
+    jogadoresAtuais.forEach(j => {
+      escalaAtual.push(j.textContent);
+    });
+  
+    localStorage.setItem('escalacao', JSON.stringify(escalaAtual));
+  }
+
+  jogador.addEventListener('click', () => {
+    const novoNome = prompt('Digite o nome ou número do jogador:', jogador.textContent);
+    if (novoNome !== null && novoNome.trim() !== '') {
+      jogador.textContent = novoNome.trim();
+      atualizarEscalacaoLocalStorage(); // Salva após edição
+    }
+  });
