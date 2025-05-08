@@ -21,8 +21,7 @@ Este é um projeto simples e interativo que permite montar a escalação de um t
 ## 🚀 Publicado com GitHub Pages
 
 Você pode acessar o projeto publicado aqui:  
-👉 [https://seu-usuario.github.io/simulador-escalacao](https://seu-usuario.github.io/simulador-escalacao)  
-_(substitua pelo seu link real)_
+👉 [https://juliabarrosdev.github.io/escalacao-interativa/]
 
 ## 📁 Estrutura do projeto
 simulador-escalacao/
